@@ -60,3 +60,7 @@ This is a **Chrome Extension** that allows you to automatically or manually take
 
 ## License
 MIT License
+
+
+
+

@@ -1,69 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Telegram Screenshot Sender</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            width: 300px;
-            padding: 15px;
-            background: #f8f9fa;
-        }
-        h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        input {
-            width: 100%;
-            padding: 6px;
-            margin-top: 4px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            margin-top: 15px;
-            padding: 8px;
-            width: 100%;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            font-size: 15px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #status {
-            margin-top: 10px;
-            font-size: 14px;
-            text-align: center;
-            color: red;
-        }
-    </style>
+    <title>Shot2TG</title>
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-<h2>Telegram Screenshot Sender</h2>
-<label>Bot Token:</label>
-<input type="text" id="token" placeholder="123456:ABC-DEF1234...">
+<div class="container">
+    <h2>Shot2TG</h2>
 
-<label>Chat ID:</label>
-<input type="text" id="chatId" placeholder="123456789">
+    <div class="field">
+        <label for="token">Telegram Bot Token</label>
+        <input id="token" type="text" placeholder="123456:ABC-DEF..." autocomplete="off">
+    </div>
 
-<label>Soat oralig'i (daqiqa):</label>
-<input type="number" id="interval" placeholder="60">
+    <div class="field">
+        <label for="chatId">Chat ID</label>
+        <input id="chatId" type="text" placeholder="123456789" autocomplete="off">
+    </div>
 
-<button id="save">Saqlash</button>
-<button id="sendNow">Hozir yuborish</button>
+    <div class="field">
+        <label for="interval">Interval (daqiqalarda)</label>
+        <select id="interval">
+            <option value="1">1 daqiqa</option>
+            <option value="5">5 daqiqa</option>
+            <option value="10" selected>10 daqiqa</option>
+            <option value="30">30 daqiqa</option>
+            <option value="60">60 daqiqa</option>
+        </select>
+    </div>
 
-<div id="status"></div>
+    <div class="buttons">
+        <button id="startAuto">Avto yuborishni yoqish</button>
+        <button id="sendNow" class="secondary">Hozir yuborish</button>
+        <button id="stopAuto" class="danger">Avto yuborishni o‘chirish</button>
+    </div>
+
+    <div id="status" aria-live="polite"></div>
+</div>
 
 <script src="popup.js"></script>
 </body>

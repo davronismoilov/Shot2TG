@@ -1,33 +1,98 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const tokenInput = document.getElementById("token");
-    const chatIdInput = document.getElementById("chatId");
-    const intervalInput = document.getElementById("interval");
-    const statusDiv = document.getElementById("status");
+const $ = (id) => document.getElementById(id);
+const statusEl = $("status");
 
-    chrome.storage.local.get(["token", "chatId", "interval"], (data) => {
-        if (data.token) tokenInput.value = data.token;
-        if (data.chatId) chatIdInput.value = data.chatId;
-        if (data.interval) intervalInput.value = data.interval;
+function setStatus(msg, type = "info") {
+    statusEl.textContent = msg || "";
+    statusEl.style.color = type === "error" ? "#dc2626" : type === "ok" ? "#059669" : "#6b7280";
+}
+
+async function loadSettings() {
+    const { token, chatId, intervalMinutes, autoEnabled } = await chrome.storage.local.get({
+        token: "",
+        chatId: "",
+        intervalMinutes: 10,
+        autoEnabled: false
     });
 
-    document.getElementById("save").addEventListener("click", () => {
-        const token = tokenInput.value.trim();
-        const chatId = chatIdInput.value.trim();
-        const interval = parseInt(intervalInput.value.trim()) || 60;
+    $("token").value = token;
+    $("chatId").value = chatId;
+    $("interval").value = String(intervalMinutes);
 
-        chrome.storage.local.set({ token, chatId, interval }, () => {
-            chrome.runtime.sendMessage({ type: "updateAlarm", interval });
-            statusDiv.textContent = "Sozlamalar saqlandi.";
+    if (autoEnabled) {
+        setStatus(`Avto yuborish yoqilgan (har ${intervalMinutes} daqiqada).`, "ok");
+    } else {
+        setStatus("Avto yuborish o‘chirilgan.");
+    }
+}
+
+async function saveSettings(partial) {
+    await chrome.storage.local.set(partial);
+}
+
+function validateInputs(requireAll = true) {
+    const token = $("token").value.trim();
+    const chatId = $("chatId").value.trim();
+    const intervalMinutes = parseInt($("interval").value, 10);
+
+    if (!token || !chatId) {
+        setStatus("Token va Chat ID to‘ldirilishi shart.", "error");
+        return null;
+    }
+    if (Number.isNaN(intervalMinutes) || intervalMinutes < 1) {
+        setStatus("Interval 1 daqiqadan katta bo‘lishi kerak.", "error");
+        return null;
+    }
+    if (!requireAll) {
+        // allow partial save if needed later
+    }
+
+    return { token, chatId, intervalMinutes };
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadSettings();
+
+    $("startAuto").addEventListener("click", async () => {
+        const data = validateInputs(true);
+        if (!data) return;
+
+        await saveSettings({
+            token: data.token,
+            chatId: data.chatId,
+            intervalMinutes: data.intervalMinutes,
+            autoEnabled: true
+        });
+
+        chrome.runtime.sendMessage(
+            { type: "startAuto", intervalMinutes: data.intervalMinutes },
+            (resp) => {
+                if (resp && resp.ok) {
+                    setStatus(`Avto yuborish yoqildi (har ${data.intervalMinutes} daqiqa).`, "ok");
+                } else {
+                    setStatus("Avto yuborishni yoqishda xatolik.", "error");
+                }
+            }
+        );
+    });
+
+    $("sendNow").addEventListener("click", async () => {
+        const data = validateInputs(true);
+        if (!data) return;
+
+        await saveSettings({ token: data.token, chatId: data.chatId });
+        setStatus("Yuborilmoqda...");
+
+        chrome.runtime.sendMessage({ type: "sendNow" }, (resp) => {
+            if (resp && resp.ok) setStatus("Yuborildi.", "ok");
+            else setStatus("Yuborishda xatolik.", "error");
         });
     });
 
-    document.getElementById("sendNow").addEventListener("click", () => {
-        chrome.runtime.sendMessage({ type: "sendNow" }, (response) => {
-            if (response && response.ok) {
-                statusDiv.textContent = "Skrin yuborildi.";
-            } else {
-                statusDiv.textContent = "Yuborishda xatolik.";
-            }
+    $("stopAuto").addEventListener("click", async () => {
+        await saveSettings({ autoEnabled: false });
+        chrome.runtime.sendMessage({ type: "stopAuto" }, (resp) => {
+            if (resp && resp.ok) setStatus("Avto yuborish o‘chirildi.", "ok");
+            else setStatus("O‘chirishda xatolik.", "error");
         });
     });
 });
