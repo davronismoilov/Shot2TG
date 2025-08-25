@@ -1,51 +1,102 @@
-body {
-    font-family: Arial, sans-serif;
-    width: 280px;
-    padding: 15px;
-    background: #f9f9f9;
+:root {
+    --bg: #f7f7fa;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --danger: #dc2626;
+    --danger-hover: #b91c1c;
+    --secondary: #374151;
+    --secondary-hover: #111827;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
+    width: 320px;
+    padding: 14px;
 }
 
 h2 {
+    margin: 0 0 12px 0;
     font-size: 18px;
-    margin-bottom: 10px;
     text-align: center;
 }
 
-label {
-    margin-top: 8px;
-    font-weight: bold;
-    font-size: 13px;
+.field {
+    margin-bottom: 10px;
 }
 
-input {
-    padding: 6px;
-    margin-top: 3px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+label {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+input, select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: var(--primary);
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 12px;
 }
 
 button {
-    margin-top: 12px;
-    padding: 8px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px;
+    width: 100%;
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
     cursor: pointer;
+    background: var(--primary);
+    color: white;
 }
 
-button:hover {
-    background: #0056b3;
+button:hover { background: var(--primary-hover); }
+
+button.secondary {
+    background: var(--secondary);
+}
+button.secondary:hover {
+    background: var(--secondary-hover);
+}
+
+button.danger {
+    background: var(--danger);
+}
+button.danger:hover {
+    background: var(--danger-hover);
 }
 
 #status {
     margin-top: 10px;
-    font-size: 13px;
-    color: green;
+    font-size: 12px;
+    color: var(--muted);
     text-align: center;
+    min-height: 18px;
+    white-space: pre-line;
 }

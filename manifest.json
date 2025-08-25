@@ -1,22 +1,32 @@
 {
   "manifest_version": 3,
-  "name": "Telegram Screenshot Sender",
-  "version": "1.0",
-  "description": "Har soatda yoki tugma orqali ekranning skrinshotini Telegramga yuboradi",
+  "name": "Shot2TG",
+  "version": "2.0.0",
+  "description": "Brauzer oynasidan skrinshot olib Telegram botga yuboradi (avto/qo'lda).",
   "permissions": [
     "storage",
     "alarms",
     "activeTab",
-    "scripting",
     "tabs"
+  ],
+  "host_permissions": [
+    "https://api.telegram.org/*"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_title": "Shot2TG",
+    "default_icon": {
+      "16": "icons/icon.png",
+      "48": "icons/icon.png",
+      "128": "icons/icon.png"
+    }
   },
-  "host_permissions": [
-    "https://api.telegram.org/*"
-  ]
+  "icons": {
+    "16": "icons/icon.png",
+    "48": "icons/icon.png",
+    "128": "icons/icon.png"
+  }
 }
