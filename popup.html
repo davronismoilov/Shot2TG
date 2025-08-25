@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Telegram Screenshot Sender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            width: 300px;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+        h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 6px;
+            margin-top: 4px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 8px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #status {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<h2>Telegram Screenshot Sender</h2>
+<label>Bot Token:</label>
+<input type="text" id="token" placeholder="123456:ABC-DEF1234...">
+
+<label>Chat ID:</label>
+<input type="text" id="chatId" placeholder="123456789">
+
+<label>Soat oralig'i (daqiqa):</label>
+<input type="number" id="interval" placeholder="60">
+
+<button id="save">Saqlash</button>
+<button id="sendNow">Hozir yuborish</button>
+
+<div id="status"></div>
+
+<script src="popup.js"></script>
+</body>
+</html>

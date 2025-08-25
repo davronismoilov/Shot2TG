@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Telegram Screenshot Sender",
+  "version": "1.0",
+  "description": "Har soatda yoki tugma orqali ekranning skrinshotini Telegramga yuboradi",
+  "permissions": [
+    "storage",
+    "alarms",
+    "activeTab",
+    "scripting",
+    "tabs"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "host_permissions": [
+    "https://api.telegram.org/*"
+  ]
+}
